@@ -69,6 +69,9 @@ Built at the YEEP Hackathon 2026 (Thrive 4 Blacks × Impact Toolbox), Surrey BC.
 | Kay (Mentor) | The K in CAGE KONNECT |
 
 ---
+## Presentation link
+https://prezi.com/view/kVnc66OFvCNzSVaBLNmm/?referral_token=R3skcLlnB3FN
+
 
 ## Status
 
