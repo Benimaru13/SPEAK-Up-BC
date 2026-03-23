@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPEAK Up BC — Admin Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --n900:#060D1F;--n800:#0D1B38;--n700:#112248;--n600:#1B3268;
+  --n500:#1E4080;--n400:#2B5499;--n300:#4A7FC4;--n200:#7BAFD4;
+  --n100:#B8D4EC;--n50:#E8F0F8;
+  --milk:#F9F7F3;--milk2:#F2EFE9;--milk3:#E8E4DC;
+  --td:#0D1B38;--tm:#2C3E5C;--ts:#566B8A;--th:#8DA0B8;
+  --sur:#FFFFFF;--bdr:#D8E2F0;--bdr2:#BDD0E8;
+  --green:#0D6E4C;--gbg:#E6F4EF;
+  --amber:#8B6400;--abg:#FEF3C7;
+  --red:#8B1F1F;--rbg:#FEE2E2;
+  --blue:#2563EB;--blue-s:#3B82F6;--bbg:#EFF6FF;
+  --purple:#4A2D8A;--pbg:#EEE8FA;
+  --warn-l:#FFF8E6;--warn-b:#F0C840;--warn-t:#7A5800;
+  --dng-l:#FFF0E6;--dng-b:#E88040;--dng-t:#8B3A00;
+  --rcmp:#8B1F1F;--rcmp-bg:#FEE2E2;--rcmp-b:#D45050;
+}
+.dark{
+  --n800:#1A2540;--n700:#1F2E52;
+  --milk:#0F1623;--milk2:#141D2E;--milk3:#1A2540;
+  --td:#D8E4F5;--tm:#9AAAC0;--ts:#6A7E98;--th:#3A4E68;
+  --sur:#141D2E;--bdr:#1E2D45;--bdr2:#243554;
+  --green:#2DAA7E;--gbg:#082A1E;
+  --amber:#C49020;--abg:#2A1E08;
+  --red:#C04040;--rbg:#2A0808;
+  --bbg:#080E1E;--pbg:#10082A;
+  --warn-l:#2A2005;--warn-b:#A08010;--warn-t:#D8C020;
+  --dng-l:#2A1005;--dng-b:#C05010;--dng-t:#D88020;
+  --rcmp:#C04040;--rcmp-bg:#2A0808;--rcmp-b:#C04040;
+}
+body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--td);background:var(--milk);transition:background .2s,color .2s;}
+
+/* LOGIN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--n800);}
+.login-card{background:var(--sur);border-radius:16px;padding:38px 42px;width:380px;box-shadow:0 12px 40px rgba(0,0,0,.22);}
+.login-logo{font-family:'DM Serif Display',serif;font-size:22px;text-align:center;color:var(--td);margin-bottom:3px;}
+.login-logo-up{color:var(--n300);font-style:italic;}
+.login-logo-bc{color:var(--n400);font-size:16px;font-family:'DM Sans',sans-serif;font-weight:300;}
+.login-sub{text-align:center;font-size:13px;color:var(--th);margin-bottom:22px;}
+.login-demo{background:var(--n50);border:1px solid var(--bdr);border-radius:9px;padding:11px 13px;margin-bottom:16px;font-size:12px;color:var(--ts);line-height:1.8;}
+.login-demo strong{color:var(--td);}
+.lf{margin-bottom:14px;}
+.lf label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--th);margin-bottom:5px;}
+.lf input{width:100%;font-size:13px;font-family:inherit;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;background:var(--sur);color:var(--td);outline:none;transition:border .15s;}
+.lf input:focus{border-color:var(--blue-s);}
+.btn-login{width:100%;padding:11px;background:var(--n700);color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s;}
+.btn-login:hover{background:var(--n600);}
+.login-err{font-size:12px;color:var(--red);text-align:center;margin-top:8px;display:none;}
+
+/* APP */
+#app{display:none;}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:1px solid var(--bdr);background:var(--n800);color:#fff;transition:background .2s;}
+.dark .nav{background:var(--sur);border-color:var(--bdr);}
+.logo{font-family:'DM Serif Display',serif;font-size:16px;color:#fff;}
+.logo-up{color:var(--n200);font-style:italic;}
+.logo-bc{color:var(--n300);font-size:13px;font-family:'DM Sans',sans-serif;font-weight:300;margin-left:2px;}
+.dark .logo{color:var(--td);}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-txt{font-size:12px;color:rgba(255,255,255,.45);}
+.dark .nav-txt{color:var(--th);}
+.dm-btn,.logout-btn{font-size:12px;padding:4px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;cursor:pointer;transition:background .15s;font-family:inherit;}
+.dm-btn:hover,.logout-btn:hover{background:rgba(255,255,255,.16);}
+.dark .dm-btn,.dark .logout-btn{border-color:var(--bdr);background:var(--milk2);color:var(--td);}
+.layout{display:flex;min-height:calc(100vh - 46px);}
+.sidebar{width:176px;border-right:1px solid var(--bdr);padding:14px 0;background:var(--sur);flex-shrink:0;transition:background .2s;}
+.si{padding:8px 16px;font-size:13px;cursor:pointer;color:var(--ts);display:flex;align-items:center;gap:8px;transition:background .12s;}
+.si:hover{background:var(--milk2);color:var(--td);}
+.si.active{background:var(--bbg);color:var(--blue);font-weight:600;border-right:2px solid var(--n600);}
+.si-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.main{flex:1;padding:18px 20px;background:var(--milk);overflow:auto;transition:background .2s;}
+.view{display:none;}.view.active{display:block;}
+.pg-title{font-size:15px;font-weight:600;margin-bottom:3px;}
+.pg-sub{font-size:12px;color:var(--th);margin-bottom:14px;}
+.stats-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px;}
+.sc{background:var(--sur);border:1px solid var(--bdr);border-radius:9px;padding:13px 15px;}
+.sc-lbl{font-size:11px;color:var(--th);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;}
+.sc-val{font-size:22px;font-weight:700;}
+.g{color:var(--green);}.a{color:var(--amber);}.r{color:var(--red);}.b{color:var(--blue);}
+.panel{background:var(--sur);border:1px solid var(--bdr);border-radius:11px;padding:16px 18px;transition:background .2s;}
+.tw{background:var(--sur);border:1px solid var(--bdr);border-radius:11px;overflow:hidden;margin-bottom:14px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead tr{border-bottom:1px solid var(--bdr);}
+th{padding:9px 13px;text-align:left;font-weight:600;font-size:11px;color:var(--th);text-transform:uppercase;letter-spacing:.04em;background:var(--milk2);cursor:pointer;user-select:none;}
+th:hover{color:var(--td);}
+th.asc::after{content:' ↑';}th.desc::after{content:' ↓';}
+td{padding:10px 13px;border-bottom:1px solid var(--bdr);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+.rh:hover{background:var(--milk2);cursor:pointer;}
+.badge{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600;white-space:nowrap;}
+.b-new{background:var(--bbg);color:var(--blue);}
+.b-review{background:var(--abg);color:var(--amber);}
+.b-fwd{background:var(--pbg);color:var(--purple);}
+.b-esc{background:var(--dng-l);color:var(--dng-t);border:1px solid var(--dng-b);}
+.b-res{background:var(--gbg);color:var(--green);}
+.b-rcmp{background:var(--rcmp-bg);color:var(--rcmp);border:1px solid var(--rcmp-b);}
+.btn{font-size:12px;padding:5px 13px;border-radius:8px;border:1px solid var(--bdr2);background:var(--sur);cursor:pointer;color:var(--td);font-family:inherit;transition:background .12s;}
+.btn:hover{background:var(--milk2);}
+.btn-p{background:var(--n700);color:#fff;border-color:var(--n700);}
+.btn-p:hover{background:var(--n600);}
+.btn-danger{background:var(--rcmp-bg);color:var(--rcmp);border:1px solid var(--rcmp-b);}
+.btn-danger:hover{background:var(--rbg);}
+.mono{font-family:'DM Serif Display',serif;font-size:13px;letter-spacing:.02em;}
+.tag-conf{display:inline-flex;align-items:center;font-size:11px;color:var(--th);background:var(--milk2);border-radius:20px;padding:2px 8px;}
+.crumb{font-size:12px;color:var(--th);margin-bottom:12px;cursor:pointer;}
+.crumb span{color:var(--td);}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.tl{list-style:none;}
+.tl-item{display:flex;gap:10px;padding-bottom:4px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-left{display:flex;flex-direction:column;align-items:center;width:18px;flex-shrink:0;}
+.tl-dot{width:10px;height:10px;border-radius:50%;margin-top:3px;flex-shrink:0;}
+.dot-done{background:var(--green);}.dot-active{background:var(--amber);}.dot-pend{background:var(--bdr);}.dot-over{background:var(--red);}.dot-rcmp{background:var(--rcmp);}
+.tl-line{flex:1;width:1px;background:var(--bdr);margin-top:3px;}
+.tl-stage-group{flex:1;margin-bottom:10px;}
+.tl-stage{font-size:13px;font-weight:600;}
+.tl-stage.muted{color:var(--th);font-weight:400;}
+.tl-entries{margin-top:4px;}
+.tl-entry{background:var(--milk2);border-radius:7px;padding:8px 10px;margin-bottom:5px;}
+.tl-entry-badge{display:inline-block;font-size:10px;padding:1px 7px;border-radius:20px;font-weight:600;margin-bottom:4px;}
+.tl-update-badge{background:var(--bbg);color:var(--blue);}
+.tl-rcmp-badge{background:var(--rcmp-bg);color:var(--rcmp);border:1px solid var(--rcmp-b);}
+.tl-entry-date{font-size:11px;color:var(--th);margin-bottom:2px;}
+.tl-entry-note{font-size:12px;color:var(--ts);line-height:1.5;}
+.tl-pend{font-size:12px;color:var(--th);padding:5px 0;}
+.ob{background:var(--rbg);border:1px solid var(--red);border-radius:8px;padding:9px 13px;font-size:13px;color:var(--red);display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.warn-48{background:var(--warn-l);border:1px solid var(--warn-b);border-radius:8px;padding:9px 13px;font-size:13px;color:var(--warn-t);display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.warn-10{background:var(--dng-l);border:1px solid var(--dng-b);border-radius:8px;padding:9px 13px;font-size:13px;color:var(--dng-t);display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.rcmp-banner{background:var(--rcmp-bg);border:1px solid var(--rcmp-b);border-radius:8px;padding:9px 13px;font-size:13px;color:var(--rcmp);display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.wi{width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;flex-shrink:0;}
+.wi-warn{background:var(--warn-t);}.wi-dng{background:var(--dng-t);}.wi-red{background:var(--red);}
+.updater{background:var(--milk2);border-radius:9px;padding:13px;margin-top:13px;}
+.updater select,.updater textarea{width:100%;font-size:13px;font-family:'DM Sans',sans-serif;margin-top:5px;background:var(--sur);color:var(--td);border:1px solid var(--bdr);border-radius:7px;padding:7px 9px;outline:none;}
+.updater textarea{resize:vertical;min-height:54px;line-height:1.5;}
+.fl-lbl{font-size:11px;color:var(--th);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px;}
+.fl-val{font-size:13px;line-height:1.5;}
+.fg{margin-bottom:12px;}
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:11px 18px;margin-bottom:12px;}
+.toast{position:fixed;bottom:18px;right:18px;background:var(--n700);color:#fff;padding:9px 16px;border-radius:9px;font-size:13px;display:none;z-index:9999;}
+.flash{animation:fl 1.6s ease;}
+@keyframes fl{0%,100%{background:transparent}30%{background:var(--bbg)}}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.bar-lbl{width:150px;font-size:12px;color:var(--ts);text-align:right;flex-shrink:0;}
+.bar-track{flex:1;height:16px;background:var(--milk2);border-radius:4px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;}
+.bar-num{font-size:12px;font-weight:600;min-width:14px;}
+.school-card{background:var(--sur);border:1px solid var(--bdr);border-radius:11px;padding:14px 16px;margin-bottom:12px;}
+.sc-name{font-size:14px;font-weight:600;margin-bottom:2px;}
+.sc-dist{font-size:12px;color:var(--th);margin-bottom:10px;}
+.sc-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.sc-stat{background:var(--milk2);border-radius:7px;padding:8px 10px;}
+.sc-stat-lbl{font-size:10px;color:var(--th);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px;}
+.sc-stat-val{font-size:16px;font-weight:700;}
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bdr);}
+.setting-row:last-child{border-bottom:none;}
+.setting-lbl{font-size:13px;font-weight:600;}
+.setting-desc{font-size:12px;color:var(--th);margin-top:2px;}
+.toggle{position:relative;width:36px;height:20px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.slider{position:absolute;inset:0;background:var(--bdr2);border-radius:20px;cursor:pointer;transition:.2s;}
+.slider:before{content:'';position:absolute;width:14px;height:14px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s;}
+.toggle input:checked+.slider{background:var(--n500);}
+.toggle input:checked+.slider:before{transform:translateX(16px);}
+.filter-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.filter-row select{font-size:12px;padding:5px 10px;border-radius:8px;border:1px solid var(--bdr);background:var(--sur);color:var(--td);cursor:pointer;}
+.sla-block{background:var(--milk2);border-radius:9px;padding:14px 16px;margin-top:10px;}
+.sla-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--bdr);}
+.sla-item:last-child{border-bottom:none;}
+.sla-icon{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;font-size:13px;}
+.sla-title{font-size:13px;font-weight:600;margin-bottom:2px;}
+.sla-desc{font-size:12px;color:var(--ts);line-height:1.5;}
+.sla-badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;margin-top:5px;font-weight:600;}
+.sb-warn{background:var(--warn-l);color:var(--warn-t);border:1px solid var(--warn-b);}
+.sb-dng{background:var(--dng-l);color:var(--dng-t);border:1px solid var(--dng-b);}
+.sb-rcmp{background:var(--rcmp-bg);color:var(--rcmp);border:1px solid var(--rcmp-b);}
+.sidebar-footer{padding:14px 16px 0;margin-top:12px;border-top:1px solid var(--bdr);}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">SPEAK <span class="login-logo-up">Up</span><span class="login-logo-bc"> BC</span></div>
+    <div class="login-sub">Admin Portal — Authorized Staff Only</div>
+    <div class="login-demo">
+      <strong>Demo credentials</strong><br>
+      Username: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3253565f5b5c724142575359474250511c5153">[email&#160;protected]</a></strong><br>
+      Password: <strong>speakup2026</strong>
+    </div>
+    <div class="lf"><label>Username</label><input type="email" id="login-user" value="admin@speakupbc.ca" placeholder="admin@speakupbc.ca"></div>
+    <div class="lf"><label>Password</label><input type="password" id="login-pass" value="speakup2026" placeholder="••••••••••"></div>
+    <button class="btn-login" onclick="doLogin()">Sign in to admin portal</button>
+    <div class="login-err" id="login-err">Incorrect credentials. Use the demo credentials shown above.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+<div class="nav">
+  <div class="logo">SPEAK <span class="logo-up">Up</span><span class="logo-bc"> BC</span>
+    <span style="font-weight:400;font-size:12px;opacity:.5;margin-left:8px;">Admin Portal</span>
+  </div>
+  <div class="nav-right">
+    <span class="nav-txt">SPEAK Up BC · Staff</span>
+    <button class="dm-btn" onclick="toggleDark()">Dark mode</button>
+    <button class="logout-btn" onclick="doLogout()">Log out</button>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div style="padding:10px 16px 6px;font-size:10px;color:var(--th);text-transform:uppercase;letter-spacing:.06em;">Navigation</div>
+    <div class="si active" onclick="nav('inbox',this)"><div class="si-dot"></div>Case inbox</div>
+    <div class="si" onclick="nav('dashboard',this)"><div class="si-dot"></div>Dashboard</div>
+    <div class="si" onclick="nav('reports',this)"><div class="si-dot"></div>Reports</div>
+    <div class="si" onclick="nav('schools',this)"><div class="si-dot"></div>Schools</div>
+    <div class="si" onclick="nav('settings',this)"><div class="si-dot"></div>Settings</div>
+    <div class="sidebar-footer">
+      <div style="font-size:11px;color:var(--th);line-height:1.5;">Student Platform for Equity, Accountability & Knowledge</div>
+      <div style="font-size:10px;color:var(--th);margin-top:5px;">BC Pilot · 2026</div>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- INBOX -->
+    <div class="view active" id="view-inbox">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div><div class="pg-title">Case inbox</div><div class="pg-sub">Active cases — resolved cases are in the Reports tab. Click any row to open.</div></div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn" onclick="loadFromStorage();renderInbox()">↻ Refresh</button>
+          <button class="btn btn-p" onclick="simNew()">+ Simulate new report</button>
+        </div>
+      </div>
+      <div class="tw"><table id="inbox-tbl">
+        <thead><tr>
+          <th onclick="sortBy('id',this)">Case ID</th>
+          <th onclick="sortBy('type',this)">Type</th>
+          <th onclick="sortBy('school',this)">School</th>
+          <th onclick="sortBy('date',this)">Submitted</th>
+          <th onclick="sortBy('reporter',this)">Reporter</th>
+          <th onclick="sortBy('status',this)">Status</th>
+          <th></th>
+        </tr></thead>
+        <tbody id="inbox-body"></tbody>
+      </table></div>
+      <div style="font-size:11px;color:var(--th);margin-top:4px;">Reports submitted via the student portal appear after clicking Refresh (same browser only).</div>
+    </div>
+
+    <!-- CASE DETAIL -->
+    <div class="view" id="view-detail">
+      <div class="crumb" onclick="nav('inbox',document.querySelector('.si'))">← Case inbox / <span id="d-crumb"></span></div>
+      <div id="ob" class="ob" style="display:none;"><div class="wi wi-red">!</div><div><strong>Response overdue.</strong> This case has exceeded the 48-hour window and has been flagged for district escalation.</div></div>
+      <div id="warn48" class="warn-48" style="display:none;"><div class="wi wi-warn">!</div><div><strong>48-hour warning sent.</strong> School and district notified — no initial response recorded within the response window.</div></div>
+      <div id="warn10" class="warn-10" style="display:none;"><div class="wi wi-dng">!</div><div><strong>10-day escalation triggered.</strong> Case unaddressed beyond 10 business days. Heavy warning and formal flag sent to district and Ministry.</div></div>
+      <div id="rcmp-banner" class="rcmp-banner" style="display:none;"><div class="wi wi-red">!</div><div><strong>RCMP emergency response triggered.</strong> This case has been escalated to RCMP. Refer all further actions to law enforcement.</div></div>
+      <div class="two-col">
+        <div>
+          <div class="panel">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;padding-bottom:11px;border-bottom:1px solid var(--bdr);">
+              <div style="font-size:14px;font-weight:600;">Report details</div>
+              <div id="d-badge"></div>
+            </div>
+            <div class="dg">
+              <div class="fg"><div class="fl-lbl">Case ID</div><div class="fl-val mono" id="d-id"></div></div>
+              <div class="fg"><div class="fl-lbl">Submitted</div><div class="fl-val" id="d-date"></div></div>
+              <div class="fg"><div class="fl-lbl">Incident type</div><div class="fl-val" id="d-type"></div></div>
+              <div class="fg"><div class="fl-lbl">School</div><div class="fl-val" id="d-school"></div></div>
+              <div class="fg"><div class="fl-lbl">Reporter</div><div class="fl-val" id="d-rep"></div></div>
+              <div class="fg"><div class="fl-lbl">Witnesses</div><div class="fl-val" id="d-wit"></div></div>
+            </div>
+            <div class="fg"><div class="fl-lbl">Description</div><div class="fl-val" id="d-desc" style="background:var(--milk2);border-radius:7px;padding:9px;margin-top:4px;line-height:1.6;"></div></div>
+            <div class="fg" style="margin-bottom:0;"><div class="fl-lbl">Evidence</div><div class="fl-val" id="d-ev"></div></div>
+          </div>
+          <div class="panel" style="margin-top:13px;">
+            <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Add to action log</div>
+            <div class="updater">
+              <div class="fl-lbl">Stage</div>
+              <select id="s-sel">
+                <option value="">— select —</option>
+                <option value="Under Review (SPEAK Up BC)">Under review (SPEAK Up BC)</option>
+                <option value="Forwarded to School">Forwarded to school</option>
+                <option value="School Responding">School responding</option>
+                <option value="Escalated to District">Escalated to district</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Update">Progress update</option>
+              </select>
+              <div class="fl-lbl" style="margin-top:9px;">Note</div>
+              <textarea id="s-note" placeholder="Add a note to the action log..."></textarea>
+              <div style="display:flex;gap:8px;margin-top:9px;">
+                <button class="btn btn-p" style="flex:1;" onclick="doUpdate()">Add to log</button>
+                <button class="btn btn-danger" onclick="triggerRCMP()">🚨 RCMP</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="panel">
+            <div style="font-size:13px;font-weight:600;margin-bottom:13px;">Case timeline</div>
+            <ul class="tl" id="tl-list"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="view" id="view-dashboard">
+      <div class="pg-title">Dashboard overview</div>
+      <div class="pg-sub">March 2026 — Lower Mainland pilot</div>
+      <div class="stats-row">
+        <div class="sc"><div class="sc-lbl">Total reports</div><div class="sc-val b" id="st-total">0</div></div>
+        <div class="sc"><div class="sc-lbl">Resolved</div><div class="sc-val g" id="st-res">0</div></div>
+        <div class="sc"><div class="sc-lbl">Overdue</div><div class="sc-val r" id="st-over">0</div></div>
+        <div class="sc"><div class="sc-lbl">Avg response</div><div class="sc-val a">1.8d</div></div>
+      </div>
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--th);margin-bottom:9px;">Reports by incident type</div>
+      <div class="panel" style="margin-bottom:14px;"><div id="bar-chart"></div></div>
+      <div class="panel">
+        <div style="font-size:13px;font-weight:600;margin-bottom:7px;">Annual public data release</div>
+        <div style="font-size:13px;color:var(--ts);line-height:1.6;">At the end of each calendar year, SPEAK Up BC publishes a cross-reviewed public report with anonymized aggregate data. No case-specific or identifying information is included.</div>
+        <div style="font-size:12px;color:var(--th);margin-top:7px;">Next release: December 31, 2026</div>
+      </div>
+    </div>
+
+    <!-- REPORTS (all including resolved) -->
+    <div class="view" id="view-reports">
+      <div class="pg-title">All reports</div>
+      <div class="pg-sub">Full log including resolved cases — use filters to search</div>
+      <div class="filter-row">
+        <select id="f-type" onchange="renderReports()"><option value="">All types</option><option>Verbal / slur</option><option>Physical / assault</option><option>Online / social media</option><option>Exclusion / social</option><option>Teacher or staff conduct</option></select>
+        <select id="f-status" onchange="renderReports()"><option value="">All statuses</option><option>Submitted</option><option>Under Review (SPEAK Up BC)</option><option>Forwarded to School</option><option>School Responding</option><option>Escalated to District</option><option>Resolved</option></select>
+        <select id="f-school" onchange="renderReports()"><option value="">All schools</option></select>
+      </div>
+      <div class="tw"><table><thead><tr><th>Case ID</th><th>Type</th><th>School</th><th>Submitted</th><th>Reporter</th><th>Status</th><th></th></tr></thead><tbody id="rep-body"></tbody></table></div>
+    </div>
+
+    <!-- SCHOOLS -->
+    <div class="view" id="view-schools">
+      <div class="pg-title">Schools overview</div>
+      <div class="pg-sub">Per-school report data — Lower Mainland pilot districts</div>
+      <div id="school-cards"></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="view" id="view-settings">
+      <div class="pg-title">Settings</div>
+      <div class="pg-sub">Platform configuration for SPEAK Up BC staff</div>
+      <div class="panel" style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Notifications</div>
+        <div id="settings-notif"></div>
+      </div>
+      <div class="panel" style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:2px;">Escalation protocol</div>
+        <div style="font-size:12px;color:var(--th);margin-bottom:4px;">How SPEAK Up BC responds when schools fail to act within defined timeframes</div>
+        <div class="sla-block">
+          <div class="sla-item">
+            <div class="sla-icon" style="background:var(--warn-l);">⚠</div>
+            <div><div class="sla-title">48-hour light warning</div><div class="sla-desc">If no initial response is recorded within 48 hours of a report being forwarded, a light warning is sent to the school administrator and district equity office.</div><div class="sla-badge sb-warn">Triggers at 48 hours — school + district notified</div></div>
+          </div>
+          <div class="sla-item">
+            <div class="sla-icon" style="background:var(--dng-l);">🚨</div>
+            <div><div class="sla-title">10-day heavy escalation</div><div class="sla-desc">If a case remains unaddressed after 10 business days, a formal heavy warning is issued to the district superintendent and BC Ministry of Education equity office.</div><div class="sla-badge sb-dng">Triggers at 10 business days — district + Ministry flagged</div></div>
+          </div>
+          <div class="sla-item">
+            <div class="sla-icon" style="background:var(--rcmp-bg);">🚔</div>
+            <div><div class="sla-title">RCMP emergency escalation</div><div class="sla-desc">For cases involving a dangerous or threatening outcome. Staff-initiated only from the case detail view.</div><div class="sla-badge sb-rcmp">Manual trigger — staff-initiated only</div></div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--th);margin-top:9px;">Timers apply from the moment a report is forwarded to the school.</div>
+      </div>
+      <div class="panel">
+        <div style="font-size:13px;font-weight:600;margin-bottom:7px;">About SPEAK Up BC</div>
+        <div style="font-size:13px;color:var(--ts);line-height:1.6;"><strong>Student Platform for Equity, Accountability & Knowledge</strong><br>A nonprofit organization empowering BC students to report racism in schools and track their cases to resolution.</div>
+        <div style="font-size:12px;color:var(--th);margin-top:7px;">Version 1.0 · Pilot release · Lower Mainland, BC · 2026</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const STAGES=["Submitted","Under Review (SPEAK Up BC)","Forwarded to School","School Responding","Escalated to District","Resolved"];
+const PRELOADED=[
+  {id:"SV-1042-RT",date:"Mar 18, 2026",type:"Verbal / slur",school:"Fleetwood Park Secondary",district:"Surrey",reporter:"Confidential",stored:null,wit:"Yes — 2 students",desc:"During lunch, a student repeatedly used a racial slur directed at me in front of other students near the cafeteria. I asked them to stop but they continued. No teacher was present.",ev:"None",status:"School Responding",overdue:false,warn48:true,warn10:false,rcmp:false,log:[{s:"Submitted",d:"Mar 18, 9:41 AM",n:"Report received via SPEAK Up BC student portal."},{s:"Under Review (SPEAK Up BC)",d:"Mar 18, 11:15 AM",n:"Reviewed by SPEAK Up BC staff. Classified: verbal harassment. Forwarding to school."},{s:"Forwarded to School",d:"Mar 18, 1:03 PM",n:"Forwarded to Fleetwood Park Secondary Safe Schools coordinator. 48-hour response required."},{s:"School Responding",d:"Mar 19, 10:22 AM",n:"School acknowledged receipt. Principal reviewing CCTV and interviewing witnesses."}]},
+  {id:"SV-1031-MK",date:"Mar 14, 2026",type:"Teacher or staff conduct",school:"Sullivan Heights Secondary",district:"Surrey",reporter:"Named",stored:"Amara O.",wit:"No",desc:"My history teacher made a comment in class that all students from certain countries are less educated. Other students laughed. I felt singled out and humiliated.",ev:"1 file uploaded",status:"Escalated to District",overdue:true,warn48:true,warn10:true,rcmp:false,log:[{s:"Submitted",d:"Mar 14, 8:05 AM",n:"Report received."},{s:"Under Review (SPEAK Up BC)",d:"Mar 14, 9:30 AM",n:"Flagged as staff conduct — elevated priority."},{s:"Forwarded to School",d:"Mar 14, 10:00 AM",n:"Forwarded to vice-principal. Response required by Mar 16."},{s:"Escalated to District",d:"Mar 17, 9:00 AM",n:"48-hour light warning sent Mar 16. No response received. Auto-escalated to Surrey District equity office. Ministry flagged."}]},
+  {id:"SV-1019-BW",date:"Mar 9, 2026",type:"Online / social media",school:"Princess Margaret Secondary",district:"Surrey",reporter:"Confidential",stored:null,wit:"Yes — unknown",desc:"A group chat was shared showing classmates posting racially offensive memes targeting Black students. Several students were tagged.",ev:"3 files uploaded",status:"Resolved",overdue:false,warn48:false,warn10:false,rcmp:false,log:[{s:"Submitted",d:"Mar 9, 3:17 PM",n:"Report received. 3 screenshots attached."},{s:"Under Review (SPEAK Up BC)",d:"Mar 9, 4:00 PM",n:"Evidence reviewed. Online harassment confirmed."},{s:"Forwarded to School",d:"Mar 9, 4:30 PM",n:"Forwarded to principal with evidence package."},{s:"School Responding",d:"Mar 10, 9:00 AM",n:"Students identified. Disciplinary meeting scheduled."},{s:"Resolved",d:"Mar 12, 2:15 PM",n:"Disciplinary action taken. Anti-racism workshop scheduled. Case closed."}]},
+  {id:"SV-1007-GH",date:"Mar 3, 2026",type:"Exclusion / social",school:"Burnaby Mountain Secondary",district:"Burnaby",reporter:"Named",stored:"Jalen T.",wit:"No",desc:"I was repeatedly excluded from group projects by the same students who made comments about not wanting to work with someone 'like me'.",ev:"None",status:"Resolved",overdue:false,warn48:false,warn10:false,rcmp:false,log:[{s:"Submitted",d:"Mar 3, 7:58 AM",n:"Report received."},{s:"Under Review (SPEAK Up BC)",d:"Mar 3, 9:00 AM",n:"Pattern of exclusion noted."},{s:"Forwarded to School",d:"Mar 3, 10:15 AM",n:"Forwarded to counsellor and equity lead."},{s:"School Responding",d:"Mar 4, 8:30 AM",n:"Counsellor met with reporter. Mediation arranged."},{s:"Resolved",d:"Mar 10, 11:00 AM",n:"Mediation completed. Case closed."}]},
+  {id:"SV-0998-LN",date:"Feb 27, 2026",type:"Physical / assault",school:"Kwantlen Park Secondary",district:"Surrey",reporter:"Named",stored:"Marcus D.",wit:"Yes — 1 student",desc:"A student pushed me against a locker while making a racial comment in the main hallway between classes.",ev:"None",status:"Resolved",overdue:false,warn48:false,warn10:false,rcmp:false,log:[{s:"Submitted",d:"Feb 27, 2:14 PM",n:"Physical incident flagged high priority."},{s:"Under Review (SPEAK Up BC)",d:"Feb 27, 2:45 PM",n:"Physical + racial — escalated urgency."},{s:"Forwarded to School",d:"Feb 27, 3:00 PM",n:"Forwarded to principal. 24-hour response requested."},{s:"School Responding",d:"Feb 28, 9:10 AM",n:"Confirmed via witness and hallway footage."},{s:"Resolved",d:"Mar 3, 10:00 AM",n:"Student suspended 3 days. Restorative process initiated. Case closed."}]},
+  {id:"SV-0981-TQ",date:"Feb 20, 2026",type:"Verbal / slur",school:"Burnaby Mountain Secondary",district:"Burnaby",reporter:"Confidential",stored:null,wit:"No",desc:"During gym class, another student made a derogatory racial comment while the teacher was not paying attention. This is not the first time.",ev:"None",status:"Forwarded to School",overdue:false,warn48:false,warn10:false,rcmp:false,log:[{s:"Submitted",d:"Feb 20, 11:03 AM",n:"Report received."},{s:"Under Review (SPEAK Up BC)",d:"Feb 20, 12:30 PM",n:"Reviewed. Repeated pattern noted."},{s:"Forwarded to School",d:"Feb 20, 1:15 PM",n:"Forwarded to Burnaby Mountain vice-principal."}]},
+  {id:"SV-0967-AX",date:"Feb 15, 2026",type:"Online / social media",school:"Enver Creek Secondary",district:"Surrey",reporter:"Named",stored:"Priya S.",wit:"Yes — 3 students",desc:"A classmate created an Instagram story mocking my cultural dress during Multicultural Day. Shared widely.",ev:"2 files uploaded",status:"Resolved",overdue:false,warn48:false,warn10:false,rcmp:false,log:[{s:"Submitted",d:"Feb 15, 4:30 PM",n:"Report received."},{s:"Under Review (SPEAK Up BC)",d:"Feb 16, 9:00 AM",n:"Cultural mockery confirmed."},{s:"Forwarded to School",d:"Feb 16, 10:00 AM",n:"Forwarded to principal."},{s:"School Responding",d:"Feb 17, 8:30 AM",n:"Students identified."},{s:"Resolved",d:"Feb 21, 2:00 PM",n:"Formal apology arranged. Cultural sensitivity session completed. Case closed."}]},
+  {id:"SV-0954-PF",date:"Feb 10, 2026",type:"Teacher or staff conduct",school:"Tamanawis Secondary",district:"Surrey",reporter:"Confidential",stored:null,wit:"No",desc:"Teacher consistently mispronounces my name after corrections and suggested students with 'unusual names' use simpler ones in Canada.",ev:"None",status:"Under Review (SPEAK Up BC)",overdue:false,warn48:false,warn10:false,rcmp:false,log:[{s:"Submitted",d:"Feb 10, 3:11 PM",n:"Report received."},{s:"Under Review (SPEAK Up BC)",d:"Feb 11, 9:45 AM",n:"Under review. Staff conduct — reviewing before forwarding."}]},
+];
+
+let CASES=[...PRELOADED];
+let curCase=null,darkMode=false,sortCol='',sortDir=1;
+
+function loadFromStorage(){
+  try{
+    const stored=JSON.parse(localStorage.getItem('speakupbc_cases')||'[]');
+    const preIds=new Set(PRELOADED.map(c=>c.id));
+    const fresh=stored.filter(c=>!preIds.has(c.id));
+    CASES=[...fresh,...PRELOADED];
+  }catch(e){CASES=[...PRELOADED];}
+}
+
+function saveCases(){
+  try{
+    const preIds=new Set(PRELOADED.map(c=>c.id));
+    const user=CASES.filter(c=>!preIds.has(c.id));
+    localStorage.setItem('speakupbc_cases',JSON.stringify(user));
+  }catch(e){}
+}
+
+function doLogin(){
+  const u=document.getElementById('login-user').value.trim();
+  const p=document.getElementById('login-pass').value.trim();
+  if(u==='admin@speakupbc.ca'&&p==='speakup2026'){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    loadFromStorage();renderInbox();
+  }else{
+    document.getElementById('login-err').style.display='block';
+  }
+}
+
+function doLogout(){
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+}
+
+function toggleDark(){darkMode=!darkMode;document.body.classList.toggle('dark',darkMode);}
+
+function bClass(s,rcmp){
+  if(rcmp)return'b-rcmp';
+  if(s==='Resolved')return'b-res';
+  if(s==='Escalated to District')return'b-esc';
+  if(s==='School Responding'||s==='Forwarded to School')return'b-fwd';
+  if(s==='Under Review (SPEAK Up BC)')return'b-review';
+  return'b-new';
+}
+
+function rowHtml(c,idx){
+  return`<tr class="rh" onclick="openCase(${idx})">
+    <td><span class="mono">${c.id}</span></td>
+    <td>${c.type}</td>
+    <td style="max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.school}</td>
+    <td>${c.date}</td>
+    <td>${c.reporter==='Confidential'?'<span class="tag-conf">Confidential</span>':`<div style="font-size:13px;">${c.stored||''}</div><div style="font-size:11px;color:var(--th);">Named</div>`}</td>
+    <td>
+      <span class="badge ${bClass(c.status,c.rcmp)}">${c.rcmp?'RCMP Escalated':c.status}</span>
+      ${c.warn10?'<div style="font-size:10px;color:var(--dng-t);margin-top:2px;">10-day escalation</div>':c.warn48?'<div style="font-size:10px;color:var(--warn-t);margin-top:2px;">48hr warning sent</div>':''}
+    </td>
+    <td><button class="btn" onclick="event.stopPropagation();openCase(${idx})">View</button></td>
+  </tr>`;
+}
+
+function sortBy(col,th){
+  if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=1;}
+  document.querySelectorAll('#inbox-tbl th').forEach(h=>h.classList.remove('asc','desc'));
+  th.classList.add(sortDir===1?'asc':'desc');
+  CASES.sort((a,b)=>(a[col]||'').localeCompare(b[col]||'')*sortDir);
+  renderInbox();
+}
+
+function renderInbox(){
+  document.getElementById('inbox-body').innerHTML=CASES.filter(c=>c.status!=='Resolved').map((c)=>rowHtml(c,CASES.indexOf(c))).join('');
+  updateDash();populateSchoolFilter();
+}
+
+function renderReports(){
+  let cases=CASES;
+  const ft=document.getElementById('f-type')?.value||'';
+  const fs=document.getElementById('f-status')?.value||'';
+  const fsc=document.getElementById('f-school')?.value||'';
+  if(ft)cases=cases.filter(c=>c.type===ft);
+  if(fs)cases=cases.filter(c=>c.status===fs);
+  if(fsc)cases=cases.filter(c=>c.school===fsc);
+  document.getElementById('rep-body').innerHTML=cases.map(c=>rowHtml(c,CASES.indexOf(c))).join('');
+}
+
+function populateSchoolFilter(){
+  const sel=document.getElementById('f-school');if(!sel)return;
+  const schools=[...new Set(CASES.map(c=>c.school))].sort();
+  sel.innerHTML='<option value="">All schools</option>'+schools.map(s=>`<option>${s}</option>`).join('');
+}
+
+function openCase(idx){
+  curCase=idx;const c=CASES[idx];
+  document.getElementById('d-crumb').textContent=c.id;
+  document.getElementById('d-id').textContent=c.id;
+  document.getElementById('d-date').textContent=c.date;
+  document.getElementById('d-type').textContent=c.type;
+  document.getElementById('d-school').textContent=c.school;
+  document.getElementById('d-wit').textContent=c.wit||'Not specified';
+  document.getElementById('d-desc').textContent=c.desc;
+  document.getElementById('d-ev').textContent=c.ev||'None';
+  document.getElementById('d-rep').innerHTML=c.reporter==='Confidential'
+    ?'<span class="tag-conf">Confidential — no identity stored</span>'
+    :`<strong>${c.stored||''}</strong> <span style="font-size:11px;color:var(--th);">(named, stored securely)</span>`;
+  document.getElementById('d-badge').innerHTML=`<span class="badge ${bClass(c.status,c.rcmp)}">${c.rcmp?'RCMP Escalated':c.status}</span>`;
+  document.getElementById('ob').style.display=c.overdue&&!c.rcmp?'flex':'none';
+  document.getElementById('warn48').style.display=(c.warn48&&!c.warn10&&!c.rcmp)?'flex':'none';
+  document.getElementById('warn10').style.display=(c.warn10&&!c.rcmp)?'flex':'none';
+  document.getElementById('rcmp-banner').style.display=c.rcmp?'flex':'none';
+  renderTimeline(c);
+  showViewId('view-detail');
+  document.querySelectorAll('.si').forEach(i=>i.classList.remove('active'));
+}
+
+function renderTimeline(c){
+  const list=document.getElementById('tl-list');list.innerHTML='';
+  const grouped={};
+  (c.log||[]).forEach(e=>{
+    if(!grouped[e.s])grouped[e.s]=[];
+    grouped[e.s].push(e);
+  });
+  const displayStages=c.rcmp?[...STAGES,'RCMP Emergency Response']:STAGES;
+  displayStages.forEach((stage,i)=>{
+    const entries=grouped[stage]||[];
+    const has=entries.length>0;
+    const isLast=i===displayStages.length-1;
+    let dc='dot-pend';
+    if(has){
+      if(stage==='RCMP Emergency Response')dc='dot-rcmp';
+      else if(stage==='Escalated to District'&&c.overdue)dc='dot-over';
+      else if(stage===c.status&&stage!=='Resolved')dc='dot-active';
+      else dc='dot-done';
+    }
+    const li=document.createElement('li');
+    li.className='tl-item';
+    let body='';
+    if(has){
+      body='<div class="tl-entries">'+entries.map(e=>`
+        <div class="tl-entry">
+          ${stage==='RCMP Emergency Response'?'<div class="tl-entry-badge tl-rcmp-badge">RCMP ESCALATED</div>':''}
+          ${e.isUpdate?'<div class="tl-entry-badge tl-update-badge">Progress update</div>':''}
+          <div class="tl-entry-date">${e.d}</div>
+          <div class="tl-entry-note">${e.n}</div>
+        </div>`).join('')+'</div>';
+    }else{
+      body='<div class="tl-pend">Pending</div>';
+    }
+    li.innerHTML=`
+      <div class="tl-left"><div class="tl-dot ${dc}"></div>${!isLast?'<div class="tl-line"></div>':''}</div>
+      <div class="tl-stage-group">
+        <div class="tl-stage${!has?' muted':''}">${stage}</div>
+        ${body}
+      </div>`;
+    list.appendChild(li);
+  });
+}
+
+function doUpdate(){
+  const sel=document.getElementById('s-sel').value;
+  const note=document.getElementById('s-note').value.trim();
+  if(!sel){toast('Please select a stage.');return;}
+  const c=CASES[curCase];
+  const now=new Date();
+  const ds=now.toLocaleDateString('en-CA',{month:'short',day:'numeric',year:'numeric'})+', '+now.toLocaleTimeString('en-CA',{hour:'2-digit',minute:'2-digit'});
+  if(!c.log)c.log=[];
+  const logStage=sel==='Update'?c.status:sel;
+  const isUpdate=sel==='Update';
+  c.log.push({s:logStage,d:ds,n:note||(isUpdate?'Progress update added by SPEAK Up BC staff.':`Status updated to "${sel}" by SPEAK Up BC staff.`),isUpdate});
+  if(!isUpdate)c.status=sel;
+  if(sel==='Resolved'){c.overdue=false;c.warn48=false;c.warn10=false;}
+  if(sel==='Escalated to District')c.overdue=true;
+  document.getElementById('s-sel').value='';
+  document.getElementById('s-note').value='';
+  saveCases();
+  renderTimeline(c);
+  document.getElementById('d-badge').innerHTML=`<span class="badge ${bClass(c.status,c.rcmp)}">${c.rcmp?'RCMP Escalated':c.status}</span>`;
+  renderInbox();renderReports();renderSchools();
+  toast('Log entry added — timeline updated');
+}
+
+function triggerRCMP(){
+  const modal=document.createElement('div');
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:9999;';
+  const box=document.createElement('div');
+  box.style.cssText='background:var(--sur);border-radius:13px;padding:28px;max-width:400px;width:90%;border:1px solid var(--rcmp-b);';
+  box.innerHTML=`
+    <div style="font-size:15px;font-weight:700;color:var(--rcmp);margin-bottom:10px;">RCMP Emergency Escalation</div>
+    <div style="font-size:13px;color:var(--ts);line-height:1.6;margin-bottom:18px;">Use only for cases involving a <strong>dangerous or threatening outcome</strong> — ongoing physical risk, credible threats, or imminent harm. This action is permanently logged and cannot be undone.</div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button id="rcmp-cancel" style="font-size:13px;padding:8px 18px;border-radius:8px;border:1px solid var(--bdr2);background:var(--sur);cursor:pointer;color:var(--td);font-family:inherit;">Cancel</button>
+      <button id="rcmp-confirm" style="font-size:13px;padding:8px 18px;border-radius:8px;border:none;background:var(--rcmp);color:#fff;cursor:pointer;font-weight:600;font-family:inherit;">Confirm escalation</button>
+    </div>`;
+  modal.appendChild(box);
+  document.body.appendChild(modal);
+  box.querySelector('#rcmp-cancel').onclick=()=>document.body.removeChild(modal);
+  box.querySelector('#rcmp-confirm').onclick=()=>{
+    document.body.removeChild(modal);
+    const c=CASES[curCase];
+    const now=new Date();
+    const ds=now.toLocaleDateString('en-CA',{month:'short',day:'numeric',year:'numeric'})+', '+now.toLocaleTimeString('en-CA',{hour:'2-digit',minute:'2-digit'});
+    if(!c.log)c.log=[];
+    c.log.push({s:'RCMP Emergency Response',d:ds,n:'RCMP emergency escalation triggered by SPEAK Up BC staff. Case flagged for law enforcement due to dangerous or threatening outcome.'});
+    c.rcmp=true;
+    saveCases();
+    document.getElementById('rcmp-banner').style.display='flex';
+    document.getElementById('ob').style.display='none';
+    document.getElementById('warn48').style.display='none';
+    document.getElementById('warn10').style.display='none';
+    document.getElementById('d-badge').innerHTML=`<span class="badge b-rcmp">RCMP Escalated</span>`;
+    renderTimeline(c);renderInbox();renderReports();
+    toast('RCMP escalation logged and flagged');
+  };
+}
+
+function simNew(){
+  const types=["Physical / assault","Verbal / slur","Online / social media","Exclusion / social"];
+  const schools=["Fleetwood Park Secondary","Kwantlen Park Secondary","Enver Creek Secondary","Tamanawis Secondary"];
+  const si=Math.floor(Math.random()*schools.length);
+  const id="SV-"+(1100+CASES.length)+"-"+Math.random().toString(36).substr(2,2).toUpperCase();
+  const now=new Date();
+  const ds=now.toLocaleDateString('en-CA',{month:'short',day:'numeric',year:'numeric'})+', '+now.toLocaleTimeString('en-CA',{hour:'2-digit',minute:'2-digit'});
+  CASES.unshift({id,date:now.toLocaleDateString('en-CA',{month:'short',day:'numeric',year:'numeric'}),type:types[Math.floor(Math.random()*types.length)],school:schools[si],district:'Surrey',reporter:'Confidential',stored:null,wit:'Unknown',desc:'New incident reported via SPEAK Up BC student portal. Awaiting initial staff review.',ev:'None',status:'Submitted',overdue:false,warn48:false,warn10:false,rcmp:false,log:[{s:'Submitted',d:ds,n:'Report received via SPEAK Up BC student portal. Awaiting review.'}]});
+  saveCases();renderInbox();renderReports();renderSchools();
+  const fr=document.querySelector('#inbox-body tr');
+  if(fr)fr.classList.add('flash');
+  toast('New report received — '+id+' added to inbox');
+}
+
+function updateDash(){
+  document.getElementById('st-total').textContent=CASES.length;
+  document.getElementById('st-res').textContent=CASES.filter(c=>c.status==='Resolved').length;
+  document.getElementById('st-over').textContent=CASES.filter(c=>c.overdue).length;
+  const counts={};CASES.forEach(c=>{counts[c.type]=(counts[c.type]||0)+1;});
+  const max=Math.max(...Object.values(counts),1);
+  const colors={"Verbal / slur":"#1E4080","Physical / assault":"#8B1F1F","Online / social media":"#2B5499","Exclusion / social":"#8B6400","Teacher or staff conduct":"#0D6E4C"};
+  document.getElementById('bar-chart').innerHTML=Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`
+    <div class="bar-row"><div class="bar-lbl">${t}</div>
+    <div class="bar-track"><div class="bar-fill" style="width:${Math.round(n/max*100)}%;background:${colors[t]||'#1E4080'};"></div></div>
+    <div class="bar-num">${n}</div></div>`).join('');
+}
+
+function renderSchools(){
+  const bySchool={};
+  CASES.forEach(c=>{if(!bySchool[c.school])bySchool[c.school]={name:c.school,district:c.district,cases:[]};bySchool[c.school].cases.push(c);});
+  const colors={"Verbal / slur":"#1E4080","Physical / assault":"#8B1F1F","Online / social media":"#2B5499","Exclusion / social":"#8B6400","Teacher or staff conduct":"#0D6E4C"};
+  document.getElementById('school-cards').innerHTML=Object.values(bySchool).sort((a,b)=>b.cases.length-a.cases.length).map(s=>{
+    const total=s.cases.length,resolved=s.cases.filter(c=>c.status==='Resolved').length,overdue=s.cases.filter(c=>c.overdue).length,rate=total?Math.round(resolved/total*100):0;
+    const tc={};s.cases.forEach(c=>{tc[c.type]=(tc[c.type]||0)+1;});
+    const max2=Math.max(...Object.values(tc),1);
+    const bars=Object.entries(tc).map(([t,n])=>`<div class="bar-row" style="margin-bottom:4px;"><div class="bar-lbl" style="width:130px;font-size:11px;">${t}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(n/max2*100)}%;background:${colors[t]||'#1E4080'};"></div></div><div class="bar-num">${n}</div></div>`).join('');
+    return`<div class="school-card">
+      <div class="sc-name">${s.name}</div><div class="sc-dist">${s.district} School District</div>
+      <div class="sc-stats">
+        <div class="sc-stat"><div class="sc-stat-lbl">Total</div><div class="sc-stat-val b">${total}</div></div>
+        <div class="sc-stat"><div class="sc-stat-lbl">Resolved</div><div class="sc-stat-val g">${resolved}</div></div>
+        <div class="sc-stat"><div class="sc-stat-lbl">Rate</div><div class="sc-stat-val ${rate>=60?'g':'a'}">${rate}%</div></div>
+        <div class="sc-stat"><div class="sc-stat-lbl">Overdue</div><div class="sc-stat-val ${overdue>0?'r':'g'}">${overdue}</div></div>
+      </div>
+      <div style="margin-top:11px;"><div style="font-size:11px;color:var(--th);text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px;">By type</div>${bars}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderSettings(){
+  document.getElementById('settings-notif').innerHTML=[
+    {lbl:'Email alert on new report',desc:'Notify staff when a new report is submitted',on:true},
+    {lbl:'48-hour warning alert',desc:'Alert when a case triggers the 48-hour light warning',on:true},
+    {lbl:'10-day escalation alert',desc:'Alert when a case triggers the 10-day heavy escalation',on:true},
+    {lbl:'Monthly summary email',desc:'Monthly digest of case statistics',on:false},
+  ].map(item=>`<div class="setting-row"><div><div class="setting-lbl">${item.lbl}</div><div class="setting-desc">${item.desc}</div></div>
+    <label class="toggle"><input type="checkbox" ${item.on?'checked':''} onchange="toast('Setting saved')"><span class="slider"></span></label></div>`).join('');
+}
+
+function showViewId(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');}
+
+function nav(name,el){
+  showViewId('view-'+name);
+  document.querySelectorAll('.si').forEach(i=>i.classList.remove('active'));
+  if(el)el.classList.add('active');
+  if(name==='reports'){renderReports();populateSchoolFilter();}
+  if(name==='dashboard')updateDash();
+  if(name==='schools')renderSchools();
+  if(name==='settings')renderSettings();
+  if(name==='inbox')renderInbox();
+}
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>{t.style.display='none';},2400);}
+
+function init(){
+  document.getElementById('login-pass').addEventListener('keypress',function(e){if(e.key==='Enter')doLogin();});
+}
+init();
+</script>
+</body>
+</html>
